@@ -10,9 +10,9 @@ import {
 
 const router = express.Router();
 
-router.get("", getAllFilms);
+router.get("/", getAllFilms);
 router.get("/:index", getFilmById);
-router.post("", createFilm);
+router.post("/", createFilm);
 router.put("/:index", updateFilm);
 router.delete("/:index", deleteFilm);
 
