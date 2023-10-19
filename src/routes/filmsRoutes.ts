@@ -1,40 +1,19 @@
 import express from "express";
 
+import {
+  getAllFilms,
+  getFilm,
+  createFilm,
+  updateFilm,
+  deleteFilm,
+} from "../controllers/filmControllers";
+
 const router = express.Router();
 
-let films = ["Lord of the Rings", "The Hobbit", "Harry Potter"].map(
-  (filmTitle) => ({
-    title: filmTitle,
-    views: Math.floor(Math.random() * 1000000) + 10000000,
-    releaseDate: new Date(
-      Date.now() - (Math.random() * 100000000000 + 500000000000)
-    ),
-  })
-);
-
-router.get("", (req, res) => {
-  res.send(films);
-});
-
-router.get("/:index", (req, res) => {
-  res.send(films[parseInt(req.params.index)]);
-});
-
-router.post("", (req, res) => {
-  films.push(req.body);
-  res.send(films);
-});
-
-router.put("/:index", (req, res) => {
-  const index = parseInt(req.params.index);
-  films[index] = { ...films[index], ...req.body };
-  res.send(films[index]);
-});
-
-router.delete("/:index", (req, res) => {
-  const index = parseInt(req.params.index);
-  films = films.filter((_, i) => i !== index);
-  res.send(films);
-});
+router.get("", getAllFilms);
+router.get("/:index", getFilm);
+router.post("", createFilm);
+router.put("/:index", updateFilm);
+router.delete("/:index", deleteFilm);
 
 export default router;
