@@ -25,6 +25,13 @@ export const createFilm: RequestHandler = (req, res) => {
     views: randomValue(),
     releaseDate: randomDate(),
   };
+  /*  #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                title:"Dune"
+            }
+    } */
   films.push(newFilm);
   res.send(films);
 };
@@ -33,6 +40,14 @@ export const updateFilm: RequestHandler = (req, res) => {
   const index = parseInt(req.params.index);
   films[index] = { ...films[index], ...req.body };
   res.send(films[index]);
+  /*  #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                title:"Dune"
+                releaseDate:"2023-10-19T14:23:54.429Z"
+            }
+    } */
 };
 
 export const deleteFilm: RequestHandler = (req, res) => {
