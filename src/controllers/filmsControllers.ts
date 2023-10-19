@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 
 const randomValue = () => Math.floor(Math.random() * 1e6 + 1e7);
-const randomDate = () => new Date(Date.now() - (Math.random() * 1e11 + 5e11));
+const randomDate = () => new Date(Date.now() * Math.random());
 
 let films = ["Lord of the Rings", "The Hobbit", "Harry Potter"].map(
   (title) => ({
@@ -15,7 +15,7 @@ export const getAllFilms: RequestHandler = (req, res) => {
   res.send(films);
 };
 
-export const getFilm: RequestHandler = (req, res) => {
+export const getFilmById: RequestHandler = (req, res) => {
   res.send(films[parseInt(req.params.index)]);
 };
 

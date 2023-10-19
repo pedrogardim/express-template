@@ -2,16 +2,16 @@ import express from "express";
 
 import {
   getAllFilms,
-  getFilm,
+  getFilmById,
   createFilm,
   updateFilm,
   deleteFilm,
-} from "../controllers/filmControllers";
+} from "../controllers/filmsControllers";
 
 const router = express.Router();
 
 router.get("", getAllFilms);
-router.get("/:index", getFilm);
+router.get("/:index", getFilmById);
 router.post("", createFilm);
 router.put("/:index", updateFilm);
 router.delete("/:index", deleteFilm);
