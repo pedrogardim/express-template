@@ -1,57 +1,73 @@
 import { RequestHandler } from "express";
+import { User } from "../models/User";
 
-let users = ["Pedro", "Juan", "Ana", "Maria"].map((name, index) => ({
-  id: index,
-  name: name,
-  email: `${name.toLowerCase()}@gmail.com`,
-  createdAt: new Date(),
-}));
-
-export const getAllUsers: RequestHandler = (req, res) => {
-  res.send(users);
+export const getAllUsers: RequestHandler = async (req, res) => {
+  try {
+    const films = await User.find({ take: 10 });
+    res.json(films);
+  } catch (err) {
+    res.json(err);
+  }
 };
 
-export const getUserById: RequestHandler = (req, res) => {
-  res.send(users.find((user) => user.id === parseInt(req.params.id)));
+export const getUserById: RequestHandler = async (req, res) => {
+  try {
+    const films = await User.findOne({
+      where: { id: parseInt(req.params.id) },
+    });
+    res.json(films);
+  } catch (err) {
+    res.json(err);
+  }
 };
 
-export const createUser: RequestHandler = (req, res) => {
-  const newUser = {
-    ...req.body,
-    id: users.length,
-    createdAt: new Date(),
-  };
-  users.push(newUser);
-  res.send(users);
-
-  /*  #swagger.parameters['body'] = {
+export const createUser: RequestHandler = async (req, res) => {
+  try {
+    const createdFilm = await User.create(req.body).save();
+    /*  #swagger.parameters['body'] = {
             in: 'body',
             required: true,
             schema: {
-                name: "Pedro",
+                username: "Pedro",
                 email: "me@pedro.com"
             }
     } */
+    res.json(createdFilm);
+  } catch (err) {
+    res.json(err);
+  }
 };
 
-export const updateUser: RequestHandler = (req, res) => {
-  const reqId = parseInt(req.params.id);
-  const userIndex = users.findIndex((e) => e.id === reqId);
-  users[userIndex] = { ...users[userIndex], ...req.body };
-  res.send(users[userIndex]);
-
-  /*  #swagger.parameters['body'] = {
+export const updateUser: RequestHandler = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    let film = await User.findOneBy({ id });
+    if (!film?.recover) {
+      res.json(`Film with id ${id} does't exist`);
+      return;
+    }
+    film = { ...film, ...req.body };
+    await User.save(film as User);
+    res.json(film);
+    /*  #swagger.parameters['body'] = {
             in: 'body',
             required: true,
             schema: {
-                name: "Pedro",
+                username: "Pedro",
                 email: "me@pedro.com"
             }
     } */
+  } catch (err) {
+    res.json(err);
+  }
 };
 
-export const deleteUser: RequestHandler = (req, res) => {
-  const reqId = parseInt(req.params.id);
-  users = users.filter(({ id }) => id !== reqId);
-  res.send(users);
+export const deleteUser: RequestHandler = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const filmToRemove = await User.delete({ id });
+    res.json(filmToRemove);
+  } catch (err) {
+    res.json(err);
+  }
 };
