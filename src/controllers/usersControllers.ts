@@ -23,6 +23,15 @@ export const createUser: RequestHandler = (req, res) => {
   };
   users.push(newUser);
   res.send(users);
+
+  /*  #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                name: "Pedro",
+                email: "me@pedro.com"
+            }
+    } */
 };
 
 export const updateUser: RequestHandler = (req, res) => {
@@ -30,6 +39,15 @@ export const updateUser: RequestHandler = (req, res) => {
   const userIndex = users.findIndex((e) => e.id === reqId);
   users[userIndex] = { ...users[userIndex], ...req.body };
   res.send(users[userIndex]);
+
+  /*  #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                name: "Pedro",
+                email: "me@pedro.com"
+            }
+    } */
 };
 
 export const deleteUser: RequestHandler = (req, res) => {
