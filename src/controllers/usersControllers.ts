@@ -3,8 +3,8 @@ import { User } from "../models/User";
 
 export const getAllUsers: RequestHandler = async (req, res) => {
   try {
-    const films = await User.find({ take: 10 });
-    res.json(films);
+    const users = await User.find({ take: 10 });
+    res.json(users);
   } catch (err) {
     res.json(err);
   }
@@ -12,10 +12,10 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 
 export const getUserById: RequestHandler = async (req, res) => {
   try {
-    const films = await User.findOne({
+    const user = await User.findOne({
       where: { id: parseInt(req.params.id) },
     });
-    res.json(films);
+    res.json(user);
   } catch (err) {
     res.json(err);
   }
@@ -23,7 +23,7 @@ export const getUserById: RequestHandler = async (req, res) => {
 
 export const createUser: RequestHandler = async (req, res) => {
   try {
-    const createdFilm = await User.create(req.body).save();
+    const createdUser = await User.create(req.body).save();
     /*  #swagger.parameters['body'] = {
             in: 'body',
             required: true,
@@ -32,7 +32,7 @@ export const createUser: RequestHandler = async (req, res) => {
                 email: "me@pedro.com"
             }
     } */
-    res.json(createdFilm);
+    res.json(createdUser);
   } catch (err) {
     res.json(err);
   }
@@ -41,14 +41,14 @@ export const createUser: RequestHandler = async (req, res) => {
 export const updateUser: RequestHandler = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    let film = await User.findOneBy({ id });
-    if (!film?.recover) {
-      res.json(`Film with id ${id} does't exist`);
+    let user = await User.findOneBy({ id });
+    if (!user?.recover) {
+      res.json(`User with id ${id} does't exist`);
       return;
     }
-    film = { ...film, ...req.body };
-    await User.save(film as User);
-    res.json(film);
+    user = { ...user, ...req.body };
+    await User.save(user as User);
+    res.json(user);
     /*  #swagger.parameters['body'] = {
             in: 'body',
             required: true,
@@ -65,8 +65,8 @@ export const updateUser: RequestHandler = async (req, res) => {
 export const deleteUser: RequestHandler = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const filmToRemove = await User.delete({ id });
-    res.json(filmToRemove);
+    const userToRemove = await User.delete({ id });
+    res.json(userToRemove);
   } catch (err) {
     res.json(err);
   }
