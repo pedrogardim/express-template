@@ -12,5 +12,8 @@ export class Film extends BaseEntity {
   director: string;
 
   @Column()
+  producer: string;
+
+  @Column()
   release_year: Date;
 }
