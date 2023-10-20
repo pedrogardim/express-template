@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { CreateFilms1697789879993 } from "../migration/1697789879993-create-films";
 import { AddProducerColumn1697796069608 } from "../migration/1697796069608-add-producer-column";
+import { Film } from "../models/Film";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -10,7 +11,7 @@ export const AppDataSource = new DataSource({
   database: "films_app",
   username: "root",
   password: "1234",
-  entities: [],
+  entities: [Film],
   synchronize: false,
   logging: true,
   migrations: [CreateFilms1697789879993, AddProducerColumn1697796069608],
