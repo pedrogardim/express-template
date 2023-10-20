@@ -7,9 +7,9 @@ const randomDate = () => new Date(Date.now() * Math.random());
 export const getAllFilms: RequestHandler = async (req, res) => {
   try {
     const films = await Film.find({ take: 10 });
-    res.send(films);
+    res.json(films);
   } catch (err) {
-    res.send(err);
+    res.json(err);
   }
 };
 
@@ -18,9 +18,9 @@ export const getFilmById: RequestHandler = async (req, res) => {
     const films = await Film.findOne({
       where: { id: parseInt(req.params.id) },
     });
-    res.send(films);
+    res.json(films);
   } catch (err) {
-    res.send(err);
+    res.json(err);
   }
 };
 
@@ -37,9 +37,9 @@ export const createFilm: RequestHandler = async (req, res) => {
                 "release_year": "2020-10-20T10:57:33.815Z"
             }
     } */
-    res.send(createdFilm);
+    res.json(createdFilm);
   } catch (err) {
-    res.send(err);
+    res.json(err);
   }
 };
 
@@ -48,12 +48,12 @@ export const updateFilm: RequestHandler = async (req, res) => {
     const id = parseInt(req.params.id);
     let film = await Film.findOneBy({ id });
     if (!film?.recover) {
-      res.send(`Film with id ${id} does't exist`);
+      res.json(`Film with id ${id} does't exist`);
       return;
     }
     film = { ...film, ...req.body };
     await Film.save(film as Film);
-    res.send(film);
+    res.json(film);
     /*  #swagger.parameters['body'] = {
             in: 'body',
             required: true,
@@ -65,7 +65,7 @@ export const updateFilm: RequestHandler = async (req, res) => {
             }
     } */
   } catch (err) {
-    res.send(err);
+    res.json(err);
   }
 };
 
@@ -73,8 +73,8 @@ export const deleteFilm: RequestHandler = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const filmToRemove = await Film.delete({ id });
-    res.send(filmToRemove);
+    res.json(filmToRemove);
   } catch (err) {
-    res.send(err);
+    res.json(err);
   }
 };
