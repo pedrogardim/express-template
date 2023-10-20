@@ -3,6 +3,7 @@ import { DataSource } from "typeorm";
 import { CreateFilms1697789879993 } from "../migration/1697789879993-create-films";
 import { CreateUsers1697807671336 } from "../migration/1697807671336-create-users";
 import { Film } from "../models/Film";
+import { User } from "../models/User";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: "films_app",
   username: "root",
   password: "1234",
-  entities: [Film],
+  entities: [Film, User],
   synchronize: false,
   logging: true,
   migrations: [CreateFilms1697789879993, CreateUsers1697807671336],
