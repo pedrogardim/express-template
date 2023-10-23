@@ -7,6 +7,7 @@ import { CreateFilmGenre1698048067802 } from "../migration/1698048067802-create-
 import { AddUserFields1698050465772 } from "../migration/1698050465772-add-user-fields";
 import { Film } from "../models/Film";
 import { User } from "../models/User";
+import { Genre } from "../models/Genre";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -15,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: "films_app",
   username: "root",
   password: "1234",
-  entities: [Film, User],
+  entities: [Film, User, Genre],
   synchronize: false,
   logging: true,
   migrations: [
