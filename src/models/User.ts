@@ -4,6 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 @Entity("users")
@@ -17,6 +18,18 @@ export class User extends BaseEntity {
   @Column()
   email: string;
 
+  @Column()
+  password: string;
+
+  @Column()
+  is_active: boolean;
+
+  @Column()
+  role: "user" | "admin" | "superadmin";
+
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
