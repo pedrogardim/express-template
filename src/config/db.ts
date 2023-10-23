@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { CreateFilms1697789879993 } from "../migration/1697789879993-create-films";
 import { CreateUsers1697807671336 } from "../migration/1697807671336-create-users";
+import { CreateGenres1698047081764 } from "../migration/1698047081764-create-genres";
 import { Film } from "../models/Film";
 import { User } from "../models/User";
 
@@ -15,5 +16,9 @@ export const AppDataSource = new DataSource({
   entities: [Film, User],
   synchronize: false,
   logging: true,
-  migrations: [CreateFilms1697789879993, CreateUsers1697807671336],
+  migrations: [
+    CreateFilms1697789879993,
+    CreateUsers1697807671336,
+    CreateGenres1698047081764,
+  ],
 });
