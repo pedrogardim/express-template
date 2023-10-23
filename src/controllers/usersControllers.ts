@@ -29,7 +29,8 @@ export const createUser: RequestHandler = async (req, res) => {
             required: true,
             schema: {
                 username: "Pedro",
-                email: "me@pedro.com"
+                email: "me@pedro.com",
+                password: "1234"
             }
     } */
     res.json(createdUser);
@@ -54,7 +55,8 @@ export const updateUser: RequestHandler = async (req, res) => {
             required: true,
             schema: {
                 username: "Pedro",
-                email: "me@pedro.com"
+                email: "me@pedro.com",
+                password: "1234"
             }
     } */
   } catch (err) {
