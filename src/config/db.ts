@@ -3,6 +3,7 @@ import { DataSource } from "typeorm";
 import { CreateFilms1697789879993 } from "../migration/1697789879993-create-films";
 import { CreateUsers1697807671336 } from "../migration/1697807671336-create-users";
 import { CreateGenres1698047081764 } from "../migration/1698047081764-create-genres";
+import { CreateFilmGenre1698048067802 } from "../migration/1698048067802-create-film-genre";
 import { Film } from "../models/Film";
 import { User } from "../models/User";
 
@@ -20,5 +21,6 @@ export const AppDataSource = new DataSource({
     CreateFilms1697789879993,
     CreateUsers1697807671336,
     CreateGenres1698047081764,
+    CreateFilmGenre1698048067802,
   ],
 });
