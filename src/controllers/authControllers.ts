@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { User } from "../models/User";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const register: RequestHandler = async (req, res) => {
   try {
@@ -23,7 +24,13 @@ export const register: RequestHandler = async (req, res) => {
                           password: "1234"
                       }
               } */
-    res.json(createdUser);
+
+    const token = jwt.sign(
+      { user_id: createdUser.id, email },
+      process.env.TOKEN_KEY as string
+    );
+
+    res.json({ createdUser, token });
   } catch (err) {
     res.json(err);
   }
@@ -33,11 +40,21 @@ export const login: RequestHandler = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOneBy({ email });
+    const user = (await User.findOneBy({ email })) as User;
+
+    if (!user) {
+      throw "Login Failed";
+    }
 
     const isPasswordCorrect = await bcrypt.compare(
       password,
       user?.password || ""
+    );
+
+    const token = jwt.sign(
+      { user_id: user.id, email },
+      process.env.TOKEN_KEY as string,
+      { expiresIn: "1h" }
     );
     /*  #swagger.parameters['body'] = {
                 in: 'body',
@@ -48,7 +65,7 @@ export const login: RequestHandler = async (req, res) => {
                 }
         } */
 
-    res.json(isPasswordCorrect ? "Login Successful" : "Login Failed");
+    res.json(isPasswordCorrect ? token : "Login Failed");
   } catch (err) {
     res.json(err);
   }
