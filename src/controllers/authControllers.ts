@@ -91,15 +91,12 @@ export const refreshToken: RequestHandler = async (req, res) => {
       refreshToken,
       REFRESH_TOKEN_KEY as string,
       (err: any, user: any) => {
-        console.log(user);
         if (err) return res.sendStatus(403);
         const { email, user_id } = user;
 
         const accessToken = jwt.sign({ email, user_id }, TOKEN_KEY as string, {
           expiresIn: "15m",
         });
-
-        console.log(accessToken);
 
         res.json({ accessToken });
         return;
