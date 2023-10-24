@@ -1,11 +1,5 @@
-import express, {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  Response,
-} from "express";
+import express from "express";
 import morgan from "morgan";
-import { expressjwt as jwt } from "express-jwt";
 import swaggerUi from "swagger-ui-express";
 
 import filmsRoute from "./routes/filmsRoutes";
