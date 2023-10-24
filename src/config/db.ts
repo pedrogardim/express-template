@@ -8,6 +8,7 @@ import { AddUserFields1698050465772 } from "../migration/1698050465772-add-user-
 import { Film } from "../models/Film";
 import { User } from "../models/User";
 import { Genre } from "../models/Genre";
+import { CreateTasks1698146312196 } from "../migration/1698146312196-create-tasks";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -25,5 +26,6 @@ export const AppDataSource = new DataSource({
     CreateGenres1698047081764,
     CreateFilmGenre1698048067802,
     AddUserFields1698050465772,
+    CreateTasks1698146312196
   ],
 });
