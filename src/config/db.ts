@@ -5,10 +5,11 @@ import { CreateUsers1697807671336 } from "../migration/1697807671336-create-user
 import { CreateGenres1698047081764 } from "../migration/1698047081764-create-genres";
 import { CreateFilmGenre1698048067802 } from "../migration/1698048067802-create-film-genre";
 import { AddUserFields1698050465772 } from "../migration/1698050465772-add-user-fields";
+import { CreateTasks1698146312196 } from "../migration/1698146312196-create-tasks";
 import { Film } from "../models/Film";
 import { User } from "../models/User";
 import { Genre } from "../models/Genre";
-import { CreateTasks1698146312196 } from "../migration/1698146312196-create-tasks";
+import { Task } from "../models/task";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -17,7 +18,7 @@ export const AppDataSource = new DataSource({
   database: "films_app",
   username: "root",
   password: "1234",
-  entities: [Film, User, Genre],
+  entities: [Film, User, Genre, Task],
   synchronize: false,
   logging: true,
   migrations: [
@@ -26,6 +27,6 @@ export const AppDataSource = new DataSource({
     CreateGenres1698047081764,
     CreateFilmGenre1698048067802,
     AddUserFields1698050465772,
-    CreateTasks1698146312196
+    CreateTasks1698146312196,
   ],
 });
