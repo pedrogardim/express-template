@@ -15,6 +15,7 @@ import authRoute from "./routes/authRoutes";
 import swaggerDocs from "./config/swagger.json";
 
 import { AppDataSource } from "./config/db";
+import { auth } from "./middlewares/auth";
 
 require("dotenv").config();
 
@@ -29,24 +30,8 @@ app.use(
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use(
-  jwt({
-    secret: process.env.TOKEN_KEY as string,
-    algorithms: ["HS256"],
-  }).unless({ path: ["/auth/login", "/auth/register", "/auth/refresh"] })
-);
-
-app.use(
-  (err: ErrorRequestHandler, _: Request, res: Response, next: NextFunction) => {
-    if (err.name === "UnauthorizedError") {
-      return res.status(401).json("Invalid token or no token provided.");
-    }
-    next(err);
-  }
-);
-
-app.use("/films", filmsRoute);
-app.use("/users", usersRoute);
+app.use("/films", auth, filmsRoute);
+app.use("/users", auth, usersRoute);
 app.use("/auth", authRoute);
 
 (async () => {
