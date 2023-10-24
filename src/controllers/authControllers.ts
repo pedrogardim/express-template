@@ -26,10 +26,7 @@ export const register: RequestHandler = async (req, res) => {
                       }
               } */
 
-    const token = jwt.sign(
-      { user_id: createdUser.id, email },
-      TOKEN_KEY as string
-    );
+    const token = jwt.sign({ id: createdUser.id, email }, TOKEN_KEY as string);
 
     res.json({ createdUser, token });
   } catch (err) {
@@ -53,12 +50,12 @@ export const login: RequestHandler = async (req, res) => {
       user?.password || ""
     );
 
-    const token = jwt.sign({ user_id: user.id, email }, TOKEN_KEY as string, {
+    const token = jwt.sign({ id: user.id, email }, TOKEN_KEY as string, {
       expiresIn: "15m",
     });
 
     const refreshToken = jwt.sign(
-      { user_id: user.id, email },
+      { id: user.id, email },
       REFRESH_TOKEN_KEY as string,
       { expiresIn: "7d" }
     );
@@ -92,9 +89,9 @@ export const refreshToken: RequestHandler = async (req, res) => {
       REFRESH_TOKEN_KEY as string,
       (err: any, user: any) => {
         if (err) return res.sendStatus(403);
-        const { email, user_id } = user;
+        const { email, id } = user;
 
-        const accessToken = jwt.sign({ email, user_id }, TOKEN_KEY as string, {
+        const accessToken = jwt.sign({ email, id }, TOKEN_KEY as string, {
           expiresIn: "15m",
         });
 
