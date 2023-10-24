@@ -39,6 +39,10 @@ export const login: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
     const { TOKEN_KEY, REFRESH_TOKEN_KEY } = process.env;
 
+    if (!email || !password) {
+      throw "Invalid email or password";
+    }
+
     const user = (await User.findOneBy({ email })) as User;
 
     if (!user) {
@@ -50,12 +54,16 @@ export const login: RequestHandler = async (req, res) => {
       user?.password || ""
     );
 
-    const token = jwt.sign({ id: user.id, email }, TOKEN_KEY as string, {
-      expiresIn: "15m",
-    });
+    const token = jwt.sign(
+      { id: user.id, email, role: user.role },
+      TOKEN_KEY as string,
+      {
+        expiresIn: "15m",
+      }
+    );
 
     const refreshToken = jwt.sign(
-      { id: user.id, email },
+      { id: user.id, email, role: user.role },
       REFRESH_TOKEN_KEY as string,
       { expiresIn: "7d" }
     );
