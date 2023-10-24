@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import filmsRoute from "./routes/filmsRoutes";
 import usersRoute from "./routes/usersRoutes";
 import authRoute from "./routes/authRoutes";
+import tasksRoute from "./routes/tasksRoute";
 
 import swaggerDocs from "./config/swagger.json";
 
@@ -24,9 +25,10 @@ app.use(
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.use("/auth", authRoute);
 app.use("/films", auth, filmsRoute);
 app.use("/users", auth, usersRoute);
-app.use("/auth", authRoute);
+app.use("/tasks", auth, tasksRoute);
 
 (async () => {
   try {
