@@ -33,7 +33,7 @@ app.use(
   jwt({
     secret: process.env.TOKEN_KEY as string,
     algorithms: ["HS256"],
-  }).unless({ path: ["/auth/login", "/auth/register"] })
+  }).unless({ path: ["/auth/login", "/auth/register", "/auth/refresh"] })
 );
 
 app.use(

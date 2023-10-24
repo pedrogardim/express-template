@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 export const register: RequestHandler = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    const { TOKEN_KEY } = process.env;
 
     const encryptedPassword = await bcrypt.hash(password, 10);
 
@@ -27,7 +28,7 @@ export const register: RequestHandler = async (req, res) => {
 
     const token = jwt.sign(
       { user_id: createdUser.id, email },
-      process.env.TOKEN_KEY as string
+      TOKEN_KEY as string
     );
 
     res.json({ createdUser, token });
@@ -39,6 +40,7 @@ export const register: RequestHandler = async (req, res) => {
 export const login: RequestHandler = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const { TOKEN_KEY, REFRESH_TOKEN_KEY } = process.env;
 
     const user = (await User.findOneBy({ email })) as User;
 
@@ -51,11 +53,16 @@ export const login: RequestHandler = async (req, res) => {
       user?.password || ""
     );
 
-    const token = jwt.sign(
+    const token = jwt.sign({ user_id: user.id, email }, TOKEN_KEY as string, {
+      expiresIn: "15m",
+    });
+
+    const refreshToken = jwt.sign(
       { user_id: user.id, email },
-      process.env.TOKEN_KEY as string,
-      { expiresIn: "1h" }
+      REFRESH_TOKEN_KEY as string,
+      { expiresIn: "7d" }
     );
+
     /*  #swagger.parameters['body'] = {
                 in: 'body',
                 required: true,
@@ -65,8 +72,40 @@ export const login: RequestHandler = async (req, res) => {
                 }
         } */
 
-    res.json(isPasswordCorrect ? token : "Login Failed");
+    res.json(isPasswordCorrect ? { token, refreshToken } : "Login Failed");
   } catch (err) {
     res.json(err);
+  }
+};
+
+export const refreshToken: RequestHandler = async (req, res) => {
+  try {
+    const { TOKEN_KEY, REFRESH_TOKEN_KEY } = process.env;
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.sendStatus(403);
+    }
+
+    jwt.verify(
+      refreshToken,
+      REFRESH_TOKEN_KEY as string,
+      (err: any, user: any) => {
+        console.log(user);
+        if (err) return res.sendStatus(403);
+        const { email, user_id } = user;
+
+        const accessToken = jwt.sign({ email, user_id }, TOKEN_KEY as string, {
+          expiresIn: "15m",
+        });
+
+        console.log(accessToken);
+
+        res.json({ accessToken });
+        return;
+      }
+    );
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
